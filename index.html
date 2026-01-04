@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts World Simulator</title>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gryffindor: #740001;
+            --slytherin: #1a472a;
+            --ravenclaw: #0e1a40;
+            --hufflepuff: #ecb939;
+        }
+        body {
+            background-color: #1a1a1a;
+            color: white;
+            font-family: 'Garamond', serif;
+            margin: 0;
+            text-align: center;
+        }
+        header {
+            background: #2c2c2c;
+            padding: 20px;
+            border-bottom: 3px solid var(--gold);
+        }
+        #game-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #252525;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        }
+        .btn {
+            background: var(--gold);
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .btn:hover { opacity: 0.8; }
+        #output {
+            margin: 20px 0;
+            min-height: 100px;
+            font-style: italic;
+            border-top: 1px solid #444;
+            padding-top: 15px;
+        }
+        .house-banner { font-size: 2em; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Hogwarts Simulator 2026</h1>
+</header>
+
+<div id="game-container">
+    <div id="status">
+        <p>Location: <span id="location">Platform 9¾</span></p>
+        <p>House: <span id="house">Unsorted</span></p>
+    </div>
+
+    <div id="output">Welcome, young wizard. Your journey begins at King's Cross.</div>
+
+    <div id="actions">
+        <button class="btn" onclick="sortHouse()">Put on Sorting Hat</button>
+        <button class="btn" onclick="explore('Great Hall')">Go to Great Hall</button>
+        <button class="btn" onclick="explore('Diagon Alley')">Go to Diagon Alley</button>
+        <button class="btn" onclick="castSpell()">Practice Spell</button>
+    </div>
+</div>
+
+<script>
+    const state = {
+        house: null,
+        location: "Platform 9¾",
+        spells: ["Lumos", "Expelliarmus", "Alohomora"]
+    };
+
+    function updateDisplay(text) {
+        document.getElementById('output').innerText = text;
+        document.getElementById('location').innerText = state.location;
+        document.getElementById('house').innerText = state.house || "Unsorted";
+    }
+
+    function sortHouse() {
+        if (state.house) return updateDisplay("You have already been sorted into " + state.house + "!");
+        
+        const houses = ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff"];
+        state.house = houses[Math.floor(Math.random() * houses.length)];
+        updateDisplay(`The Sorting Hat shouts: ${state.house.toUpperCase()}!`);
+    }
+
+    function explore(newLoc) {
+        state.location = newLoc;
+        let desc = "";
+        if (newLoc === "Great Hall") desc = "Thousands of candles float in mid-air over four long tables.";
+        if (newLoc === "Diagon Alley") desc = "The cobblestoned street is filled with shops selling cauldrons and wands.";
+        updateDisplay(desc);
+    }
+
+    function castSpell() {
+        const spell = state.spells[Math.floor(Math.random() * state.spells.length)];
+        let effect = "";
+        switch(spell) {
+            case "Lumos": effect = "Your wand tip ignites with a bright white light."; break;
+            case "Expelliarmus": effect = "A jet of red light shoots out, disarming your imaginary opponent."; break;
+            case "Alohomora": effect = "A soft click echoes as a nearby invisible lock opens."; break;
+        }
+        updateDisplay(`You cast ${spell}! ${effect}`);
+    }
+</script>
+
+</body>
+</html>
